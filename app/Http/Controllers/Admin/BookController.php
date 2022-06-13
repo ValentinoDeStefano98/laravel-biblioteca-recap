@@ -27,7 +27,7 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.books.create');
     }
 
     /**
@@ -38,7 +38,13 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->All();
+
+        $book = new Book();
+        $book->fill($data);
+        $book->save();
+
+        return redirect()->route('admin.books.index')->with('message', "Hai creato il nuovo libbro $book->title");
     }
 
     /**
@@ -47,9 +53,9 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Book $book)
     {
-        //
+        return view( 'admin.books.show', compact('book') );
     }
 
     /**
@@ -58,9 +64,9 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Book $book)
     {
-        //
+        return view( 'admin.books.edit', compact('book') );
     }
 
     /**
@@ -70,9 +76,13 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Book $book)
     {
-        //
+        $data = $request->All();
+
+        $book->update($data);
+
+        return redirect()->route('admin.books.show', compact('book'))->with('message', "Hai modificato il libro $book->title correttamente");
     }
 
     /**
@@ -81,8 +91,9 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Book $book)
     {
-        //
+        $book->delete();
+        return redirect()->route('admin.books.index')->with('message', "il libbro eliminato con successo è $book->title ");
     }
 }

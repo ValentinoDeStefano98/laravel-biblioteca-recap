@@ -20,10 +20,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware('auth')
-    ->name('admin')
+    ->name('admin.')
     ->prefix('admin')
     ->namespace('Admin')
     ->group(function(){
         Route::get('/', 'HomeController@index')->name('home');
-        Route::resource('/books', 'BookController');
+        Route::resource('books', 'BookController');
 });
